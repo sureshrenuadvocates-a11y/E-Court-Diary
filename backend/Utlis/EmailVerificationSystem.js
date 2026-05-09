@@ -7,7 +7,7 @@ export const sendOTPEmail = async (email, otp) => {
       {
         sender: {
           name: "E-Court Diary",
-          email: "yourverifiedemail@gmail.com",
+          email: "armandhull5540@gmail.com",
         },
 
         to: [
