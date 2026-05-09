@@ -7,9 +7,9 @@ const transporter = nodemailer.createTransport({
   maxConnections: 5,
   maxMessages: 100,
 
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
+ auth: {
+    user: process.env.EMAIL_USER || 'armandhull5540@gmail.com',
+    pass: process.env.EMAIL_PASS || 'ohpjncbkxclkttzu',
   },
 
   connectionTimeout: 10000,
