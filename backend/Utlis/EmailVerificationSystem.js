@@ -1,30 +1,37 @@
 import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
+  host: "smtp-relay.brevo.com",
   port: 587,
   secure: false,
   auth: {
-    user: process.env.EMAIL_USER || 'armandhull5540@gmail.com',
-    pass: process.env.EMAIL_PASS || 'ohpjncbkxclkttzu',
+    user: process.env.BREVO_USER || "aabc79001@smtp-brevo.com",
+    pass: process.env.BREVO_PASS || "",
   },
 });
 
 export const sendOTPEmail = async (email, otp) => {
   try {
     const info = await transporter.sendMail({
-      from: `"E-Court Diary" <${process.env.EMAIL_USER}>`,
+      from: `"E-Court Diary" <${process.env.BREVO_USER}>`,
       to: email,
       subject: "Email Verification OTP",
       html: `
-        <h1>E-Court Diary</h1>
-        <h2>${otp}</h2>
+        <div style="font-family:sans-serif;padding:20px">
+          <h1 style="color:#4F46E5">E-Court Diary</h1>
+
+          <p>Your verification OTP is:</p>
+
+          <h2 style="letter-spacing:4px">${otp}</h2>
+
+          <p>This OTP expires in 10 minutes.</p>
+        </div>
       `,
     });
 
-    console.log(info);
+    console.log("EMAIL SENT:", info.messageId);
 
   } catch (error) {
-    console.log(error);
+    console.log("EMAIL ERROR:", error);
   }
 };
