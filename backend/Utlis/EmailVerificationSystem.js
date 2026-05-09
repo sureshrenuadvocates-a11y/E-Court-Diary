@@ -6,7 +6,7 @@ const transporter = nodemailer.createTransport({
   secure: false,
   auth: {
     user: process.env.BREVO_USER || "aabc79001@smtp-brevo.com",
-    pass: process.env.BREVO_PASS || "",
+    pass: process.env.BREVO_PASS || "bsklfaI0PGJiFv2",
   },
 });
 
