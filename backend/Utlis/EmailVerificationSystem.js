@@ -1,37 +1,48 @@
-import nodemailer from "nodemailer";
-
-const transporter = nodemailer.createTransport({
-  host: "smtp-relay.brevo.com",
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.BREVO_USER || "aabc79001@smtp-brevo.com",
-    pass: process.env.BREVO_PASS || "bsklfaI0PGJiFv2",
-  },
-});
+import axios from "axios";
 
 export const sendOTPEmail = async (email, otp) => {
   try {
-    const info = await transporter.sendMail({
-      from: `"E-Court Diary" <${process.env.BREVO_USER}>`,
-      to: email,
-      subject: "Email Verification OTP",
-      html: `
-        <div style="font-family:sans-serif;padding:20px">
-          <h1 style="color:#4F46E5">E-Court Diary</h1>
+    const response = await axios.post(
+      "https://api.brevo.com/v3/smtp/email",
+      {
+        sender: {
+          name: "E-Court Diary",
+          email: "yourverifiedemail@gmail.com",
+        },
 
-          <p>Your verification OTP is:</p>
+        to: [
+          {
+            email,
+          },
+        ],
 
-          <h2 style="letter-spacing:4px">${otp}</h2>
+        subject: "Email Verification OTP",
 
+        htmlContent: `
+          <h1>E-Court Diary</h1>
+          <h2>${otp}</h2>
           <p>This OTP expires in 10 minutes.</p>
-        </div>
-      `,
-    });
+        `,
+      },
 
-    console.log("EMAIL SENT:", info.messageId);
+      {
+        headers: {
+          accept: "application/json",
+          "api-key": process.env.BREVO_API_KEY,
+          "content-type": "application/json",
+        },
+      }
+    );
+
+    console.log(response.data);
+
+    return true;
 
   } catch (error) {
-    console.log("EMAIL ERROR:", error);
+    console.log(
+      error.response?.data || error.message
+    );
+
+    return false;
   }
 };
